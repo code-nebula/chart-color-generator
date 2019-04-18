@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Code Nebula | Chart Color Generator </title>
+
+    <!-- Import Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+
+    <!-- Import D3 Scale Chromatic via CDN -->
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+		<link rel="stylesheet" type="text/css" href="styles/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</head>
+	<body>
+		<div class="app-container">
+      <div class="chart-container">
+        <canvas id="pie-chart"></canvas>
+      </div>
+		</div>
+  </body>
+  
+  <script src="utils/color-generator.js">
+  </script>
+
+  <script>
+    /* Set up Chart.js Pie Chart */
+    function createChart(chartId, chartData, colorScale, colorRangeInfo) {
+      /* Grab chart element by id */
+      const chartElement = document.getElementById(chartId);
+
+      const dataLength = chartData.data.length;
+
+      /* Create color array */
+      var COLORS = interpolateColors(dataLength, colorScale, colorRangeInfo);
+
+
+      /* Create chart */
+      const myChart = new Chart(chartElement, {
+        type: 'doughnut',
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              backgroundColor: COLORS,
+              hoverBackgroundColor: COLORS,
+              data: chartData.data
+            }
+          ],
+        },
+        options: {
+          responsive: true,
+          legend: {
+            display: false,
+          },
+          hover: {
+            onHover: function(e) {
+              var point = this.getElementAtEvent(e);
+              e.target.style.cursor = point.length ? 'pointer' : 'default';
+            },
+          },
+        }
+      });
+
+      return myChart;
+    }
+
+
+    function getRandomNumber(min, max) {
+      return Math.round(Math.random() * (max - min) + min);
+    }
+
+    /* Example Data */
+    const arrayLength = 10;
+    const min = 20;
+    const max = 110;
+
+    var i;
+    var data = [];
+    var labels = [];
+
+    for (i = 0; i < arrayLength; i++) {
+      data.push(getRandomNumber(min, max));
+      labels.push(`Label ${i + 1}`);
+    }
+
+    const chartData = {
+      labels: labels,
+      data: data,
+    };
+
+    const colorScale = d3.interpolateInferno;
+
+    const colorRangeInfo = {
+      colorStart: 0,
+      colorEnd: 1,
+      useEndAsStart: false,
+    };
+
+    /* Create Chart */
+    createChart('pie-chart', chartData, colorScale, colorRangeInfo);
+
+  </script>
+</html>

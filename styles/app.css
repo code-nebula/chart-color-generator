@@ -1,0 +1,23 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+body > * {
+  box-sizing: border-box;
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px 16px 16px;
+}
+
+.chart-container {
+  width: 600px;
+}
+
+#pie-chart {
+  width: 100%;
+}
